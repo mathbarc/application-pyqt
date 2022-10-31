@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from typing import NoReturn
 from PyQt5.QtCore import QObject, pyqtSignal
 from dotenv import load_dotenv, find_dotenv
@@ -27,6 +28,29 @@ class ApiManager(QObject):
     
 
     def sendToBackend(self, data) -> NoReturn:
+
+        results = []
+
+        for r in data[0]:
+            bDict = {}
+            bDict["x"] = r[0][0]
+            bDict["y"] = r[0][1]
+            bDict["w"] = r[0][2]
+            bDict["h"] = r[0][3]
+
+            rDict = {}
+            rDict["box"] = bDict
+            rDict["confidence"] = r[1]
+            rDict["label"] = r[2]
+            rDict["timestamp"] = datetime.now()
+            results.append(rDict)
+
+        if(len(results)>0):
+            self.post(results)
+
+
+
+    def post(self, data):
         return self.session.post(url=self.url, json=data)
         
 

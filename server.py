@@ -13,7 +13,7 @@ os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.location(
 if __name__=='__main__':
     app = PyQt5.QtCore.QCoreApplication(sys.argv)
     manager = Manager()
-    api_manager = ApiManager
+    api_manager = ApiManager()
 
     manager.sendResult.connect(api_manager.sendToBackend)
     manager.start()
