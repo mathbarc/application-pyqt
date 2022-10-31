@@ -9,19 +9,13 @@ class MainController(QObject):
     def __init__(self) -> None:
         super().__init__()
         self.manager = Manager()
-        #self.resultshandler = ResultsHandler()
+        
         self.window = MainWindow()
-        self.manager.postprocess.sendFrame.connect(self.window.show_frame)
-        self.manager.postprocess.sendCount.connect(self.window.refresh_text)
+        self.manager.sendResult.connect(self.window.show_frame)
 
     def run(self) -> None:
-        #self.resultshandler.sendFrame.connect(self.window.show_frame)
-        #self.resultshandler.sendValuesToView.connect(self.window.refresh_text)
-        
-
-
         self.window.showMaximized()
-        #self.resultshandler.start()
+        
         self.manager.start()
 
 

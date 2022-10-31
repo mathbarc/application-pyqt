@@ -1,7 +1,7 @@
 #external libraries
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QRect, Qt
-from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtCore import QRectF, Qt
+from PyQt5.QtGui import QFontDatabase, QColor
 import sys
 
 from scipy.optimize.optimize import main
@@ -78,7 +78,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(widget)
 
 
-    def show_frame(self, frame):
+    def show_frame(self, results):
+        frame = results[1]
         self.scene.clear()
         qimage = QtGui.QImage(frame.data, 
                                frame.shape[1], 
@@ -87,6 +88,11 @@ class MainWindow(QtWidgets.QMainWindow):
         pixmap = QtGui.QPixmap.fromImage(qimage.rgbSwapped())
         pixmapItem = self.scene.addPixmap(pixmap)
         self.graphicsView.fitInView(pixmapItem, Qt.KeepAspectRatio)
+
+        for r in results[0]:
+            rect = QRectF(r[0][0],r[0][1],r[0][2],r[0][3])
+            self.scene.addRect(rect, QColor(0,255,0))
+
     
     def refresh_text(self, value: list):
         self.countWidget.setText(f"Contagem\n\n{value}")
